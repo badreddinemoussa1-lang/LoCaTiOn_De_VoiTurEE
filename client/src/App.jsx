@@ -13,7 +13,7 @@ import Layout from "./pages/owner/Layout";
 import Dashboard from "./pages/owner/Dashboard";
 import ManageCars from "./pages/owner/ManageCars";
 import ManageBookings from "./pages/owner/ManageBookings";
-import Addcar from "./pages/owner/Addcar";
+import Addcar from "./pages/owner/AddCar";
 import Login from "./components/owner/Login";
 
 import { Toaster } from "react-hot-toast";
