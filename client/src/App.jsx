@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -16,40 +16,46 @@ import ManageBookings from "./pages/owner/ManageBookings";
 import Addcar from "./pages/owner/Addcar";
 import Login from "./components/owner/Login";
 
-import {Toaster} from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext";
-
-
 
 const App = () => {
   const { showLogin } = useAppContext();
   const isOwnerPath = useLocation().pathname.startsWith("/owner");
 
   return (
-    <>
-    <Toaster/>
-   
-      {/* ✅ Show Login only when needed */}
-      {showLogin && <Login  />}
+    <div className="min-h-screen flex flex-col">
+      <Toaster />
+
+      {showLogin && <Login />}
 
       {!isOwnerPath && <Navbar />}
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/car-details/:id" element={<CarDetails />} />
-        <Route path="/cars" element={<Cars />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
+      {/* ✅ main takes all remaining height */}
+      <div className="flex-1 pb-16">
 
-        <Route path="/owner" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="add-car" element={<Addcar />} />
-          <Route path="manage-cars" element={<ManageCars />} />
-          <Route path="manage-bookings" element={<ManageBookings />} />
-        </Route>
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/car-details/:id" element={<CarDetails />} />
+          <Route path="/cars" element={<Cars />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
 
-      {!isOwnerPath && <Footer />}
-    </>
+          <Route path="/owner" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="add-car" element={<Addcar />} />
+            <Route path="manage-cars" element={<ManageCars />} />
+            <Route path="manage-bookings" element={<ManageBookings />} />
+          </Route>
+        </Routes>
+      </div>
+
+      {/* ✅ footer forced to bottom */}
+      {!isOwnerPath && (
+        <div className="mt-auto">
+          <Footer />
+        </div>
+      )}
+    </div>
   );
 };
 

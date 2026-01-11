@@ -1,12 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
+
 *{
   font-family: "Outfit", sans-serif;
 }
-@theme {
-  --color-primary: #2563EB;
-  --color-primary-dull: #1F5D8D;
-  --color-light: #F1F5F9;
-  --color-borderColor: #c4c7d2;
 
+@theme {
+  /* ✅ New palette */
+  --color-primary: #0F172A;          /* Dark navy */
+  --color-primary-dull: #0B1220;     /* A bit darker for hover */
+  --color-muted: #64748B;            /* Muted gray (secondary text) */
+  --color-muted-foreground: #64748B; /* ✅ so you can use text-muted-foreground */
+
+  /* Background + borders */
+  --color-light: #F8FAFC;            /* Light slate background */
+  --color-borderColor: #E2E8F0;      /* Slate border */
 }
