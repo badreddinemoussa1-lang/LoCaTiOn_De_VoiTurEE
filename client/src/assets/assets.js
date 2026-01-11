@@ -44,7 +44,7 @@ import car_image4 from "./car_image4.png";
 import car_image5 from "./car_image5.png";
 import car_image6 from "./car_image6.png";
 
-export const cityList = ["Casablanca", "Marrakech", "Tanger", "Fes"];
+export const cityList = ["Casablanca", "Marrakech", "Tanger", "Fes","agadir"];
 
 export const assets = {
   logo,
