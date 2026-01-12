@@ -45,11 +45,12 @@ const ManageBookings = () => {
         subTitle="Track all customer bookings, approve or cancel requests, and manage booking statuses."
       />
 
-      <div className="max-w-3xl w-full rounded-md overflow-hidden border border-borderColor mt-6">
+      <div className="max-w-5xl w-full rounded-md overflow-hidden border border-borderColor mt-6">
         <table className="w-full border-collapse text-left text-sm text-gray-600">
           <thead className="text-gray-500">
             <tr>
               <th className="p-3 font-medium">Car</th>
+              <th className="p-3 font-medium max-md:hidden">Customer</th>
               <th className="p-3 font-medium max-md:hidden">Date Range</th>
               <th className="p-3 font-medium">Total</th>
               <th className="p-3 font-medium max-md:hidden">Payment</th>
@@ -58,69 +59,93 @@ const ManageBookings = () => {
           </thead>
 
           <tbody>
-            {bookings.map((booking, index) => (
-              <tr
-                key={index}
-                className="border-t border-borderColor text-gray-500"
-              >
-                {/* Car */}
-                <td className="p-3 flex items-center gap-3">
-                  <img
-                    src={booking.car.image}
-                    alt=""
-                    className="h-12 w-12 aspect-square rounded-md object-cover"
-                  />
-                  <p className="font-medium max-md:hidden">
-                    {booking.car.brand} {booking.car.model}
-                  </p>
-                </td>
+            {bookings.map((booking, index) => {
+              // Works if your API returns populated customer details:
+              // booking.user or booking.userId (name/email)
+              const customerName =
+                booking?.user?.name ||
+                booking?.userId?.name ||
+                booking?.customer?.name ||
+                "—";
 
-                {/* Date Range */}
-                <td className="p-3 max-md:hidden">
-                  {booking.pickupDate.split("T")[0]} to{" "}
-                  {booking.returnDate.split("T")[0]}
-                </td>
+              const customerEmail =
+                booking?.user?.email ||
+                booking?.userId?.email ||
+                booking?.customer?.email ||
+                "";
 
-                {/* Total */}
-                <td className="p-3">
-                  {booking.price} {currency}
-                </td>
+              return (
+                <tr
+                  key={booking._id || index}
+                  className="border-t border-borderColor text-gray-500"
+                >
+                  {/* Car */}
+                  <td className="p-3 flex items-center gap-3">
+                    <img
+                      src={booking.car.image}
+                      alt=""
+                      className="h-12 w-12 aspect-square rounded-md object-cover"
+                    />
+                    <p className="font-medium max-md:hidden">
+                      {booking.car.brand} {booking.car.model}
+                    </p>
+                  </td>
 
-                {/* Payment */}
-                <td className="p-3 max-md:hidden">
-                  <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">
-                    offline
-                  </span>
-                </td>
+                  {/* Customer */}
+                  <td className="p-3 max-md:hidden">
+                    <p className="font-medium text-gray-700">{customerName}</p>
+                    {customerEmail ? (
+                      <p className="text-xs text-gray-400">{customerEmail}</p>
+                    ) : null}
+                  </td>
 
-                {/* Actions */}
-                <td className="p-3">
-                  {booking.status === "pending" ? (
-                    <select
-                      onChange={(e) =>
-                        changeBookingStatus(booking._id, e.target.value)
-                      }
-                      value={booking.status}
-                      className="px-2 py-1.5 mt-1 text-gray-500 border border-borderColor rounded-md outline-none"
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="cancelled">Cancelled</option>
-                      <option value="confirmed">Confirmed</option>
-                    </select>
-                  ) : (
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        booking.status === "confirmed"
-                          ? "bg-green-100 text-green-500"
-                          : "bg-red-100 text-red-500"
-                      }`}
-                    >
-                      {booking.status}
+                  {/* Date Range */}
+                  <td className="p-3 max-md:hidden">
+                    {booking.pickupDate.split("T")[0]} to{" "}
+                    {booking.returnDate.split("T")[0]}
+                  </td>
+
+                  {/* Total */}
+                  <td className="p-3">
+                    {booking.price} {currency}
+                  </td>
+
+                  {/* Payment */}
+                  <td className="p-3 max-md:hidden">
+                    <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">
+                      offline
                     </span>
-                  )}
-                </td>
-              </tr>
-            ))}
+                  </td>
+
+                  {/* Actions */}
+                  <td className="p-3">
+                    {booking.status === "pending" ? (
+                      <select
+                        onChange={(e) =>
+                          changeBookingStatus(booking._id, e.target.value)
+                        }
+                        value={booking.status}
+                        className="px-2 py-1.5 mt-1 text-gray-500 border border-borderColor rounded-md outline-none"
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="confirmed">Confirmed</option>
+                      </select>
+                    ) : (
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          booking.status === "confirmed"
+                            ? "bg-green-100 text-green-500"
+                            : "bg-red-100 text-red-500"
+                        }`}
+                      >
+                        {booking.status}
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
